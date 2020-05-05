@@ -10,7 +10,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>-javaagent:/Users/mjdivan/.m2/repository/com/github/jbellis/jamm/0.3.3/jamm-0.3.3.jar -classpath %classpath org.ciedayap.simula.KbSJ -classpath %classpath org.ciedayap.mair.utils.InstrumentationAgent -classpath %classpath org.ciedayap.mair.utils.InstrumentationAgent</exec.args>
+                <exec.args>-javaagent:/Users/mjdivan/.m2/repository/com/github/jbellis/jamm/0.3.3/jamm-0.3.3.jar -classpath %classpath org.ciedayap.mair.utils.mainDetectors -classpath %classpath org.ciedayap.mair.utils.InstrumentationAgent -classpath %classpath org.ciedayap.mair.utils.InstrumentationAgent</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
@@ -24,7 +24,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} -javaagent:/Users/mjdivan/.m2/repository/com/github/jbellis/jamm/0.3.3/jamm-0.3.3.jar -classpath %classpath org.ciedayap.simula.KbSJ -classpath %classpath org.ciedayap.mair.utils.InstrumentationAgent -classpath %classpath org.ciedayap.mair.utils.InstrumentationAgent</exec.args>
+                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} -javaagent:/Users/mjdivan/.m2/repository/com/github/jbellis/jamm/0.3.3/jamm-0.3.3.jar -classpath %classpath org.ciedayap.mair.utils.mainDetectors -classpath %classpath org.ciedayap.mair.utils.InstrumentationAgent -classpath %classpath org.ciedayap.mair.utils.InstrumentationAgent</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
@@ -39,7 +39,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>-javaagent:/Users/mjdivan/.m2/repository/com/github/jbellis/jamm/0.3.3/jamm-0.3.3.jar -classpath %classpath org.ciedayap.simula.KbSJ -classpath %classpath org.ciedayap.mair.utils.InstrumentationAgent -classpath %classpath org.ciedayap.mair.utils.InstrumentationAgent</exec.args>
+                <exec.args>-javaagent:/Users/mjdivan/.m2/repository/com/github/jbellis/jamm/0.3.3/jamm-0.3.3.jar -classpath %classpath org.ciedayap.mair.utils.mainDetectors -classpath %classpath org.ciedayap.mair.utils.InstrumentationAgent -classpath %classpath org.ciedayap.mair.utils.InstrumentationAgent</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
