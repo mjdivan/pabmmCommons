@@ -6,6 +6,7 @@
 package org.ciedayap.buffer;
 
 import java.time.ZonedDateTime;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * A node containing the measures in a given timestamp to be stored in a SPCBufferNode instance
@@ -17,18 +18,18 @@ public class SPCBasedBufferNode {
     /**
      * Timestamp related to the measures contained in the unidimensional array (i.e. values)
      */
-    private final ZonedDateTime timestamp;
+    protected final ZonedDateTime timestamp;
     /**
      * It is a unidimensional array with measures ordered analogously to the metID array in the corresponding SPCBasedBuffer instance.
      */
-    private final Double values[];
+    protected final double values[];
     
     /**
      * Initializes the node with the indicated measures, establishing the timestamp to the creation time
      * @param values Measures ordered analogously to the metID array in the corresponding SPCBasedBuffer instance.
      * @throws BufferException It is raised when no values are provided
      */
-    public SPCBasedBufferNode(Double values[]) throws BufferException
+    public SPCBasedBufferNode(double values[]) throws BufferException
     {
         if(values==null) throw new BufferException("There not exist values");
         this.values=values;
@@ -41,7 +42,7 @@ public class SPCBasedBufferNode {
      * @param values Measures ordered analogously to the metID array in the corresponding SPCBasedBuffer instance.
      * @throws BufferException It is raised when no values are provided
      */
-    public SPCBasedBufferNode(ZonedDateTime ts,Double values[]) throws BufferException
+    public SPCBasedBufferNode(ZonedDateTime ts,double values[]) throws BufferException
     {
         if(values==null) throw new BufferException("There not exist values");
         this.values=values;
@@ -55,7 +56,7 @@ public class SPCBasedBufferNode {
      * @return A new instance with the indicated values
      * @throws BufferException 
      */
-    public static synchronized SPCBasedBufferNode create(Double values[]) throws BufferException
+    public static synchronized SPCBasedBufferNode create(double values[]) throws BufferException
     {
         return new SPCBasedBufferNode(values);
     }
@@ -67,7 +68,7 @@ public class SPCBasedBufferNode {
      * @return A new instance with the indicated values and timestamp
      * @throws BufferException 
      */
-    public static synchronized SPCBasedBufferNode create(ZonedDateTime ts,Double values[]) throws BufferException
+    public static synchronized SPCBasedBufferNode create(ZonedDateTime ts,double values[]) throws BufferException
     {
         return new SPCBasedBufferNode(ts,values);
     }
@@ -82,7 +83,7 @@ public class SPCBasedBufferNode {
     /**
      * @return the values
      */
-    public Double[] getValues() {
+    public double[] getValues() {
         return values;
     }
     

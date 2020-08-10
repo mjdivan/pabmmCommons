@@ -242,6 +242,17 @@ public class SPCMetricDetector extends Observable implements Observer{
         
         return filterTask.getXSPC();
     }
+    
+    /**
+     * It returns the last estimated known deviations
+     * @return The last estimated deviation
+     */
+    public Double getEstimatedDeviation()
+    {
+        if(filterTask==null) return null;
+        
+        return filterTask.getEstimatedDeviation();
+    }
 
     /**
      * The number of measures that support the current estimated mean

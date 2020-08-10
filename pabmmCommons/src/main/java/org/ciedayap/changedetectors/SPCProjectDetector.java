@@ -319,5 +319,49 @@ public class SPCProjectDetector extends Observable implements Observer{
         return (total==0);
     }
     
+    /**
+     * This method will return the estimated mean when it exists
+     * @param metID the metricID for which the estimated mean needs to be obtained
+     * @return The estimated mean for the metID, null otherwise
+     */
+    public synchronized Double getEstimatedMean(String metID)
+    {
+        if(metID==null || metID.trim().length()==0) return null;
+        if(map==null || map.isEmpty()) return null;
+        
+        SPCMetricDetector var = map.get(metID);
+        return (var==null)?null:var.getEstimatedMean();        
+    }
+
+    /**
+     * This method will return the estimated deviation when it exists
+     * @param metID the metricID for which the estimated mean needs to be obtained
+     * @return The estimated mean for the metID, null otherwise
+     */
+    public synchronized Double getEstimatedDeviation(String metID)
+    {
+        if(metID==null || metID.trim().length()==0) return null;
+        if(map==null || map.isEmpty()) return null;
+        
+        SPCMetricDetector var = map.get(metID);
+        return (var==null)?null:var.getEstimatedDeviation();
+    }
     
+    /**
+     * This method will add a given observer to the SPCMetricDetector instance
+     * @param metID the metricID for which the observer would be incorporatede
+     * @param o the observer to be incorporateede
+     * @return TRUE when the observer has been added, false otherwise
+     */
+    public synchronized boolean addObserverToSPCMetric(String metID, Observer o)
+    {
+        if(metID==null || metID.trim().length()==0) return false;
+        if(map==null || map.isEmpty()) return false;
+        
+        SPCMetricDetector var = map.get(metID);
+        if(var==null) return false;
+        var.addObserver(o);        
+        
+        return true;
+    }
 }

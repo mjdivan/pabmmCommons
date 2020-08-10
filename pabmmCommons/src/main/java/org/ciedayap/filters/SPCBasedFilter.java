@@ -296,6 +296,11 @@ public class SPCBasedFilter extends Observable implements  Runnable {
         return XSPC;
     }
 
+    public Double getEstimatedDeviation(){
+        if(V==null || N==0) return null;
+        
+        return Math.sqrt(V*N);
+    }
     /**
      * @return the enabled
      */

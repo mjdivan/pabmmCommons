@@ -279,7 +279,7 @@ public class mainDetectors implements Observer{
                 {
                     //Add one measure per metric
                     String met[]=buffer.getMetricIDs();
-                    Double vals[]=new Double[met.length];
+                    double vals[]=new double[met.length];
                     for(int i=0;i<vals.length;i++) vals[i]=(mean+ndev*r.nextGaussian());
                     
                     buffer.addMeasures(vals);
@@ -350,7 +350,7 @@ public class mainDetectors implements Observer{
                 {
                     //Add one measure per metric
                     String met[]=buffer.getMetricIDs();
-                    Double vals[]=new Double[met.length];
+                    double vals[]=new double[met.length];
                     for(int i=0;i<vals.length;i++) vals[i]=(mean+ndev*r.nextGaussian());
                     
                     buffer.addMeasures(vals);

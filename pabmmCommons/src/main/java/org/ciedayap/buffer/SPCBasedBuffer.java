@@ -35,54 +35,54 @@ public class SPCBasedBuffer extends Observable implements Observer{
     /**
      * The projectID related to the buffer
      */
-    private String projectID;
+    protected String projectID;
     /**
      * The max number of measures to be kept in memory per metric
      */
-    private final long maxMeasures;
+    protected final long maxMeasures;
     /**
      * The attributeID. The positioning is synchornized with metID and weighting
      */
-    private final String attID[];
+    protected final String attID[];
     /**
      * The metricID. The positioning is synchornized with attID and weighting
      */
-    private final String metID[];
+    protected final String metID[];
     /**
      * The weighting associated with a given metIID and attID
      */
-    private final double weighting[];
+    protected final double weighting[];
     /**
      * The queue cotaining the last <b>maxMeasures</b> measures
      */
-    private ConcurrentLinkedQueue<SPCBasedBufferNode> queue;
+    protected ConcurrentLinkedQueue<SPCBasedBufferNode> queue;
     /**
      * The SPC Based detector for the project
      */
-    private SPCProjectDetector detector;
+    protected SPCProjectDetector detector;
     /**
      * It is a counter of the added measures. It is restarted when the transmission occurs
      */
-    private long counter=0;
+    protected long counter=0;
     
     /**
      * It is true when the detector has indicated the change or the maxTime has been exceeded
      */
-    private boolean readyToTransmit=false;
+    protected boolean readyToTransmit=false;
     /**
      * It incorporates the last time that cleanDataBuffer was invoked. Initially, it is initialized to 
      * the creation time.
      */
-    private long nanoLastTransmission;
+    protected long nanoLastTransmission;
     /**
      * It implements a clock notifying this instance each time that given time is reached.
 //     */
-    private BufferClock clock;
+    protected BufferClock clock;
     /**
      * When it is activated, this pool is responsible for the clock
      */
-    private ExecutorService pool;    
-    private boolean verbose;
+    protected ExecutorService pool;    
+    protected boolean verbose;
 
     /**
      * It creates a new buffer instance
@@ -100,7 +100,7 @@ public class SPCBasedBuffer extends Observable implements Observer{
         if(projectID==null || projectID.trim().length()==0) throw new BufferException("The ProjectID has not indicated");
         this.projectID=projectID;
         
-        if(max<1000) this.maxMeasures=1000;
+        if(max<100) this.maxMeasures=100;
         else this.maxMeasures=max;
         
         if(attributes==null || attributes.isEmpty()) throw new BufferException("Attributes do not defined");
@@ -161,7 +161,7 @@ public class SPCBasedBuffer extends Observable implements Observer{
      * @throws DetectorException
      * @throws SPCException 
      */
-    private synchronized SPCProjectDetector initializeDetector(String projectID,ArrayList<String> attributes,Double maxSPCTolerance,boolean verbose) throws DetectorException, SPCException
+    protected synchronized SPCProjectDetector initializeDetector(String projectID,ArrayList<String> attributes,Double maxSPCTolerance,boolean verbose) throws DetectorException, SPCException
     {
         return SPCProjectDetector.create(attributes,projectID,(maxSPCTolerance==null || maxSPCTolerance<1)?5:maxSPCTolerance,verbose,
             this,11, 2, 100);//Buffer is a SPCProjectDetector's Observer-
@@ -212,7 +212,7 @@ public class SPCBasedBuffer extends Observable implements Observer{
      * @param values The measures to be incorporated
      * @throws BufferException When there no exist values to be added
      */
-    public synchronized void addMeasures(Double values[]) throws BufferException
+    public synchronized void addMeasures(double values[]) throws BufferException
     {
         addMeasures(ZonedDateTime.now(),values);
     }
@@ -224,7 +224,7 @@ public class SPCBasedBuffer extends Observable implements Observer{
      * @param ts The timestamp associated with measures
      * @throws BufferException When there no exist values to be added
     */    
-    public synchronized void addMeasures(ZonedDateTime ts,Double values[]) throws BufferException
+    public synchronized void addMeasures(ZonedDateTime ts,double values[]) throws BufferException
     {
         SPCBasedBufferNode node=SPCBasedBufferNode.create(ts, values);
         if(node==null) return;
@@ -236,8 +236,7 @@ public class SPCBasedBuffer extends Observable implements Observer{
                 counter++;
                 for(int i=0;i<metID.length;i++)
                 {
-                    if(values[i]!=null)
-                        this.detector.addMeasure(metID[i], values[i]);
+                    this.detector.addMeasure(metID[i], values[i]);
                 }
             }
         }
@@ -249,8 +248,7 @@ public class SPCBasedBuffer extends Observable implements Observer{
                 counter++;
                 for(int i=0; i<metID.length; i++)
                 {
-                    if(values[i]!=null)
-                        this.detector.addMeasure(metID[i], values[i]);
+                    this.detector.addMeasure(metID[i], values[i]);
                 }                
             }            
         }
