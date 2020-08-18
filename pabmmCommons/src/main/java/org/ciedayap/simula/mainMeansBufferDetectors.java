@@ -39,9 +39,10 @@ public class mainMeansBufferDetectors implements Observer{
         System.out.println("\t2. [Buffer] Analyzing the Buffer sizes and 'add' operation with load-shedding for 5 minutes.... ");
         System.out.println("\t3. [Buffer] Analyzing the Buffer operations for 15 minutes with LD deactivated.... ");               
         System.out.println("\t4. [Buffer] Analyzing the Buffer operations for 15 minutes with LD activated.... ");               
+        System.out.println("\t5. [Buffer] Analyzing the Buffer operations for 15 minutes without LD and temporal barrier.... ");               
         
         Scanner keyboard = new Scanner(System.in);
-        System.out.println("Choose your option [1-4]: ");
+        System.out.println("Choose your option [1-5]: ");
         int myint = keyboard.nextInt();
 
         switch(myint)
@@ -53,11 +54,14 @@ public class mainMeansBufferDetectors implements Observer{
                 sim5_BufferSizesOpTime(ia, 5,true);//it assesses the buffer size and the add operation with load shedding
                 break;              
             case 3:
-                sim6_BufferSizesandClockLD(ia,15,false);//it analyzes the alarms activating without LD for 5 minutes
+                sim6_BufferSizesandClockLD(ia,15,false,false);//it analyzes the alarms activating without LD for 5 minutes
                 break;
             case 4:
-                sim6_BufferSizesandClockLD(ia,15,true);//it analyzes the alarms activating without LD for 5 minutes
+                sim6_BufferSizesandClockLD(ia,15,true,false);//it analyzes the alarms activating without LD for 5 minutes
                 break;                
+            case 5:
+                sim6_BufferSizesandClockLD(ia,15,false,true);//only data change filter enabled (LD and temporalBarrier disabled)
+                break;                                
             default:
         }        
     }
@@ -126,7 +130,7 @@ public class mainMeansBufferDetectors implements Observer{
         }
     }
     
-    public static void sim6_BufferSizesandClockLD(InstrumentationAgent ia, int minutes, boolean loadshedding) throws DetectorException, SPCException, InterruptedException, BufferException
+    public static void sim6_BufferSizesandClockLD(InstrumentationAgent ia, int minutes, boolean loadshedding,boolean onlyFilter) throws DetectorException, SPCException, InterruptedException, BufferException
     {
         System.out.println("Analyzing the buffer sizes and clock behaviours for "+minutes+" minutes in verbose mode");
                 
@@ -155,10 +159,20 @@ public class mainMeansBufferDetectors implements Observer{
                 mainMeansBufferDetectors trx=new mainMeansBufferDetectors();
                 trx.setKsim(6);
                 trx.setIa(ia);
-                SPCMeansBasedBuffer buffer=SPCMeansBasedBuffer.create("PRJ_1", defmet, 1000, 5.0,false);//verbose
-                buffer.setLoadShedding(loadshedding);                
+                
+                SPCBasedBuffer buffer;
+                if(!onlyFilter)
+                {
+                    buffer=SPCMeansBasedBuffer.create("PRJ_1", defmet, 1000, 5.0,false);//verbose
+                    ((SPCMeansBasedBuffer)buffer).setLoadShedding(loadshedding);                                
+                    buffer.activateClock(1000*15);//15 seconds (the load shedding flag will determine whether the transmission is performed or not)
+                }
+                else
+                {//Only data change filter..Load-shedding and temporal barrier disabled                   
+                    buffer=SPCMeansBasedBuffer.create("PRJ_1", defmet, 1000, 5.0,false);//verbose                    
+                }
+                
                 buffer.addObserver(trx);
-                buffer.activateClock(1000*15);//15 seconds (the load shedding flag will determine whether the transmission is performed or not)
                 
                 long startsim=System.nanoTime();
                 long measures=0;
